@@ -25,14 +25,6 @@
 
 ---
 
-## 🖼️ Demo giao diện
-
-> ![Demo Weather App](https://user-images.githubusercontent.com/placeholder/weatherapp-demo2.gif)
->
-> *Giao diện chính, hiệu ứng nền động, dự báo theo giờ/ngày, lịch sử tìm kiếm...*
-
----
-
 ## 🏗️ Cấu trúc thư mục
 
 ```
