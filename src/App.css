@@ -1,38 +1,627 @@
-.App {
-  text-align: center;
+body {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  /* Gradient nền động, mịn, mặc định là vàng-cam nhạt */
+  background: linear-gradient(120deg, #ffe29f 0%, #ffa99f 100%);
+  background-size: 200% 200%;
+  animation: gradientMove 18s ease-in-out infinite;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* Gradient động mượt mà */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
+  padding: 2rem 1rem;
+  max-width: 420px;
+  margin: 60px auto 0 auto;
+  background: rgba(255,255,255,0.15);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.18);
+  position: relative;
+  z-index: 1;
+  overflow: hidden; /* Đảm bảo hiệu ứng nền không tràn ra ngoài */
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1565c0;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+}
+
+input {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  width: 70%;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.7);
+  color: #222;
+  outline: none;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+}
+
+input:focus {
+  box-shadow: 0 0 0 2px #64b5f6;
+}
+
+button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.weather-card {
+  background: rgba(255,255,255,0.35);
+  margin-top: 1rem;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(31,38,135,0.13);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 220px;
+  animation: fadeIn 0.7s;
+  position: relative;
+  overflow: hidden; /* Đảm bảo hiệu ứng không tràn ra ngoài */
 }
 
-.App-link {
-  color: #61dafb;
+.weather-card-fade {
+  animation: fadeInWeatherCard 0.5s;
 }
-
-@keyframes App-logo-spin {
+@keyframes fadeInWeatherCard {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(32px) scale(0.98);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.weather-card h2 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1976d2;
+  letter-spacing: 1px;
+}
+
+.weather-card p {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.weather-card .weather-icon {
+  font-size: 3.5rem;
+  margin: 0.5rem 0 0.7rem 0;
+  filter: drop-shadow(0 2px 8px rgba(33,147,176,0.13));
+}
+
+/* Bo tròn góc cho thanh cuộn ngang trong weather-card */
+.weather-card::-webkit-scrollbar,
+.weather-card div::-webkit-scrollbar {
+  height: 8px;
+  background: transparent;
+  border-radius: 8px;
+}
+
+.weather-card::-webkit-scrollbar-thumb,
+.weather-card div::-webkit-scrollbar-thumb {
+  background: #b3c6e0;
+  border-radius: 8px; /* tăng bo tròn */
+  transition: background 0.2s;
+}
+
+.weather-card::-webkit-scrollbar-thumb:hover,
+.weather-card div::-webkit-scrollbar-thumb:hover {
+  background: #1976d2;
+}
+
+.weather-card::-webkit-scrollbar-track,
+.weather-card div::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 8px;
+}
+
+/* Style thanh cuộn ngang lịch sử tìm kiếm giống hoàn toàn thanh dự báo */
+.container > div > div[style*="overflow-x: auto"]::-webkit-scrollbar {
+  height: 8px;
+  background: transparent;
+  border-radius: 8px;
+}
+
+.container > div > div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb {
+  background: #b3c6e0;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.container > div > div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb:hover {
+  background: #1976d2;
+}
+
+.container > div > div[style*="overflow-x: auto"]::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 8px;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 96vw;
+    padding: 1.5rem 0.7rem;
+  }
+  .weather-card {
+    padding: 1.5rem 0.7rem 1rem 0.7rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .container {
+    max-width: 99vw;
+    margin: 30px 0 0 0;
+    padding: 1.2rem 0.3rem;
+  }
+  .weather-card {
+    padding: 1.2rem 0.3rem 1rem 0.3rem;
+    min-height: 170px;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 100vw;
+    margin: 10px 0 0 0;
+    padding: 0.7rem 0.1rem;
+    border-radius: 0;
+  }
+  .weather-card {
+    padding: 0.7rem 0.1rem 0.7rem 0.1rem;
+    min-height: 120px;
+    border-radius: 0;
+  }
+  h1 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .form-search-bar {
+    max-width: 99vw;
+    border-radius: 8px;
+    padding: 0 2px 0 0;
+  }
+  .form-search-bar input {
+    font-size: 0.95rem;
+    padding: 10px 8px;
+    border-radius: 8px;
+  }
+  .form-search-bar .icon-btn .circle,
+  .form-search-bar .search-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .form-search-bar .search-btn {
+    margin-left: 4px;
+  }
+  .weather-card .weather-icon {
+    font-size: 2.2rem;
+  }
+  .weather-card h2 {
+    font-size: 1.1rem;
+  }
+  .weather-card p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 0.3rem 0;
+  }
+  .weather-card {
+    padding: 0.3rem 0 0.5rem 0;
+  }
+  .form-search-bar input {
+    font-size: 0.85rem;
+    padding: 7px 4px;
+  }
+}
+/* Hiệu ứng mặt trời quay */
+.weather-sun-bg {
+  position: fixed;
+  top: 8vh;
+  left: 50vw;
+  width: 120px;
+  height: 120px;
+  margin-left: -60px;
+  background: radial-gradient(circle at 60% 40%, #fffde4 0%, #ffe680 60%, #ffb347 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 80px 30px #ffe68099, 0 0 200px 80px #ffb34755;
+  animation: sun-spin 16s linear infinite;
+  opacity: 0.85;
+  z-index: 1;
+  pointer-events: none;
+}
+@keyframes sun-spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+/* Hiệu ứng mây trôi */
+.weather-clouds-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+.cloud-anim {
+  position: absolute;
+  top: 10vh;
+  left: -120px;
+  width: 120px;
+  height: 60px;
+  background: #fff;
+  border-radius: 60px;
+  opacity: 0.93; /* tăng độ rõ */
+  box-shadow: 60px 10px 80px 10px #b3c6e0, 30px 0 60px 0 #e3f2fd;
+  animation: cloud-move 60s linear infinite;
+  filter: blur(0.5px) contrast(1.08); /* tăng nét */
+}
+.cloud-anim-1 {
+  top: 22vh;
+  left: -180px;
+  width: 160px;
+  height: 70px;
+  opacity: 0.8; /* tăng độ rõ */
+  animation-duration: 80s;
+  filter: blur(0.5px) contrast(1.08);
+}
+.cloud-anim-2 {
+  top: 35vh;
+  left: -100px;
+  width: 100px;
+  height: 50px;
+  opacity: 0.85; /* tăng độ rõ */
+  animation-duration: 70s;
+  filter: blur(0.5px) contrast(1.08);
+}
+@keyframes cloud-move {
+  0% { left: -200px;}
+  100% { left: 110vw;}
+}
+
+/* Hiệu ứng storm (sét chớp) */
+.weather-storm-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: none;
+  transition: background 0.2s;
+}
+
+/* Hiệu ứng động bên trong card thời tiết */
+.weather-card {
+  position: relative;
+  overflow: hidden; /* Đảm bảo hiệu ứng không tràn ra ngoài */
+}
+
+/* Mặt trời động nhỏ bên trong card khi trời nắng */
+.weather-card .weather-sun-inner {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  background: radial-gradient(circle at 60% 40%, #fffde4 0%, #ffe680 60%, #ffb347 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 24px 8px #ffe68099, 0 0 60px 20px #ffb34755;
+  animation: sun-spin-inner 10s linear infinite;
+  opacity: 0.85;
+  z-index: 2;
+  pointer-events: none;
+}
+@keyframes sun-spin-inner {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+/* Mây động nhỏ bên trong card khi nhiều mây */
+.weather-card .weather-clouds-inner {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  width: 60px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 2;
+}
+.weather-card .cloud-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 30px;
+  background: #fff;
+  border-radius: 30px;
+  opacity: 0.7;
+  box-shadow: 30px 5px 40px 5px #b3c6e0, 15px 0 30px 0 #e3f2fd;
+  animation: cloud-move-inner 18s linear infinite;
+}
+.weather-card .cloud-inner-1 {
+  top: 10px;
+  left: 18px;
+  width: 36px;
+  height: 18px;
+  opacity: 0.5;
+  animation-duration: 24s;
+}
+@keyframes cloud-move-inner {
+  0% { left: 0;}
+  100% { left: 60px;}
+}
+
+/* Mưa động nhỏ bên trong card khi mưa */
+.weather-card .weather-rain-inner {
+  position: absolute;
+  left: 50%;
+  top: 60px;
+  width: 60px;
+  height: 40px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+.weather-card .rain-drop {
+  position: absolute;
+  width: 3px;
+  height: 16px;
+  background: linear-gradient(to bottom, #b3c6e0 0%, #2196f3 100%);
+  border-radius: 2px;
+  opacity: 0.5;
+  animation: rain-drop-fall 1.2s linear infinite;
+}
+.weather-card .rain-drop-1 { left: 8px; animation-delay: 0s;}
+.weather-card .rain-drop-2 { left: 18px; animation-delay: 0.3s;}
+.weather-card .rain-drop-3 { left: 28px; animation-delay: 0.6s;}
+.weather-card .rain-drop-4 { left: 38px; animation-delay: 0.1s;}
+.weather-card .rain-drop-5 { left: 48px; animation-delay: 0.5s;}
+@keyframes rain-drop-fall {
+  0% { top: 0; opacity: 0.5;}
+  80% { opacity: 0.5;}
+  100% { top: 40px; opacity: 0;}
+}
+
+.weather-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Thanh tìm kiếm hiện đại, nút tròn nổi bật, hài hòa */
+.form-search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.85);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+  padding: 0 8px 0 0;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.form-search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 1rem;
+  padding: 13px 16px;
+  border-radius: 12px;
+  color: #222;
+  transition: box-shadow 0.2s;
+}
+
+.form-search-bar input:focus {
+  box-shadow: 0 0 0 2px #64b5f6;
+}
+
+.form-search-bar .icon-btn {
+  padding: 0;
+  margin: 0 2px;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-search-bar .icon-btn .circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Xóa nền màu, chỉ giữ icon */
+  background: none;
+  box-shadow: none;
+  transition: background 0.18s, box-shadow 0.18s;
+  color: inherit;
+}
+
+.form-search-bar .icon-btn.gps .circle,
+.form-search-bar .icon-btn.gps .circle:hover,
+.form-search-bar .icon-btn.voice .circle,
+.form-search-bar .icon-btn.voice .circle:hover {
+  background: none;
+  color: inherit;
+  box-shadow: none;
+}
+
+.form-search-bar .icon-btn .icon {
+  font-size: 1.3rem;
+  pointer-events: none;
+}
+
+.form-search-bar .search-btn {
+  margin-left: 8px;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: #2193b0;
+  font-weight: 600;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-search-bar .search-btn:hover {
+  background: none;
+  color: #1565c0;
+  transform: translateY(-2px) scale(1.08);
+}
+
+.form-search-bar .search-btn .icon {
+  font-size: 1.3rem;
+  pointer-events: none;
+  background: none;
+}
+
+/* Thông tin chi tiết: các ô info đẹp, hiện đại, responsive */
+.weather-card-info-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.weather-card-info-box {
+  background: #f6fafd;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 1.5px 6px 0 rgba(33, 150, 243, 0.07), 0 1px 2px 0 rgba(44,62,80,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 60px;
+  min-height: 48px;
+  padding: 0.45rem 0.5rem 0.4rem 0.5rem;
+  font-size: 0.97rem;
+  position: relative;
+  cursor: help;
+  border: 1px solid #e3f0fd;
+  transition: box-shadow 0.15s, background 0.15s, border 0.15s;
+}
+
+.weather-card-info-box:hover {
+  box-shadow: 0 3px 12px 0 rgba(33, 150, 243, 0.13), 0 2px 8px 0 rgba(44,62,80,0.09);
+  background: #eaf6fb;
+  border: 1.5px solid #90caf9;
+}
+
+.weather-card-info-box .info-icon {
+  font-size: 1.13rem;
+  margin-bottom: 1px;
+  display: block;
+}
+
+.weather-card-info-box .info-label {
+  font-size: 0.85rem;
+  color: #1976d2;
+  font-weight: 500;
+  margin-bottom: 0;
+  line-height: 1.1;
+}
+
+.weather-card-info-box .info-value {
+  font-weight: 700;
+  font-size: 1.01rem;
+  color: #222;
+  margin-top: 1px;
+}
+
+@media (max-width: 600px) {
+  .weather-card-info-row {
+    gap: 4px;
+  }
+  .weather-card-info-box {
+    min-width: 44px;
+    min-height: 36px;
+    font-size: 0.91rem;
+    padding: 0.28rem 0.18rem 0.22rem 0.18rem;
+    border-radius: 6px;
+  }
+  .weather-card-info-box .info-label {
+    font-size: 0.78rem;
+  }
+  .weather-card-info-box .info-value {
+    font-size: 0.93rem;
   }
 }
