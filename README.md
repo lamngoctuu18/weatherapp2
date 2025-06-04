@@ -108,10 +108,6 @@ npm start
 2. **Commit** thay đổi, gửi pull request.
 3. Đóng góp thêm hiệu ứng, tối ưu UI/UX, bổ sung tính năng mới.
 
-**Liên hệ:**  
-- [Facebook](https://facebook.com/yourprofile)  
-- [Email](mailto:your@email.com)
-
 ---
 
 ## 📄 Bản quyền & Ghi chú
