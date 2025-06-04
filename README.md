@@ -1,7 +1,5 @@
 # 🌦️ Weather App - Ứng dụng Dự báo Thời tiết Hiện đại
 
-![Weather App Screenshot](c:\Users\84916\Downloads\z6672042511124_1b52951d60d0a5ed0f0ed80025da0ce3.jpg)
-
 ---
 
 ## 🚀 Giới thiệu
