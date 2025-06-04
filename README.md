@@ -1,6 +1,6 @@
 # 🌦️ Weather App - Ứng dụng Dự báo Thời tiết Hiện đại
 
-![Weather App Screenshot](https://user-images.githubusercontent.com/placeholder/weatherapp-demo.png)
+![Weather App Screenshot](c:\Users\84916\Downloads\z6672042511124_1b52951d60d0a5ed0f0ed80025da0ce3.jpg)
 
 ---
 
@@ -37,20 +37,20 @@
 
 ```
 src/
-  components/
-    WeatherCard.js           // Card hiển thị thông tin thời tiết
-    WeatherBackground.jsx    // Hiệu ứng nền động Lottie
-  hooks/
-    useUVI.js                // Hook lấy chỉ số UV
-  utils/
-    getWeatherIcon.js        // Hàm trả về icon thời tiết
-  assets/
-    lottie/                  // Các file animation .json
-      ...
-  App.js                     // Thành phần chính
-  App.css                    // Style tổng thể
-  index.js
-  index.css
+├── components/
+│   ├── WeatherCard.js           # Card hiển thị thông tin thời tiết
+│   └── WeatherBackground.jsx    # Hiệu ứng nền động Lottie
+├── hooks/
+│   └── useUVI.js                # Hook lấy chỉ số UV
+├── utils/
+│   └── getWeatherIcon.js        # Hàm trả về icon thời tiết
+├── assets/
+│   └── lottie/                  # Các file animation .json
+│       └── ...
+├── App.js                       # Thành phần chính
+├── App.css                      # Style tổng thể
+├── index.js
+└── index.css
 ```
 
 ---
@@ -133,5 +133,5 @@ npm start
 ---
 
 **Tác giả:**  
-Weather App - Lâm Ngọc Tú
+Weather App - Lâm Ngọc Tú  
 2025
