@@ -6,8 +6,6 @@ import cloudyAnim from "../assets/lottie/Animation - 1748927475429.json";
 import rainAnim from "../assets/lottie/Animation - 1748926672917.json";
 import snowAnim from "../assets/lottie/Animation - 1749001725347.json";
 import fogAnim from "../assets/lottie/Animation - 1749002093829.json";
-// XÓA dòng này nếu không dùng nightAnim
-// import nightAnim from "../assets/lottie/Animation - 1748926784041.json";
 import stormAnim from "../assets/lottie/Animation - 1748926736337.json";
 import useUVI from "../hooks/useUVI";
 

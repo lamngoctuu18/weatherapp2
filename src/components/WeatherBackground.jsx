@@ -1,7 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react';
 
-// Map weather type to animation file (adjust path if needed)
 const getAnimationData = (type) => {
   switch (type) {
     case 'sun':
@@ -24,9 +23,6 @@ const getAnimationData = (type) => {
       return require('../assets/lottie/Animation - 1749002093829.json');
     case 'night':
       return require('../assets/lottie/Animation - 1748926784041.json');
-    // Thêm các animation mới ở đây nếu có
-    // case 'windy':
-    //   return require('../assets/lottie/Animation - <id>.json');
     default:
       return require('../assets/lottie/Animation - 1748927475429.json');
   }
@@ -42,7 +38,7 @@ const WeatherBackground = ({ weatherType }) => (
       height: '100%',
       zIndex: 0,
       pointerEvents: 'none',
-      borderRadius: '18px', // bo tròn giống .container
+      borderRadius: '18px', 
       overflow: 'hidden'
     }}
   >
