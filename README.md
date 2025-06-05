@@ -4,7 +4,7 @@
 
 ## 👀 Preview
 
-<img src="C:\ReactJS\weatherapp2\weather-app\src\assets\imagesz6672042511124_1b52951d60d0a5ed0f0ed80025da0ce3.jpg" alt="Weather App Preview" style="max-width: 420px; border-radius: 12px; box-shadow: 0 4px 24px rgba(31,38,135,0.13); margin-bottom: 1.5rem;" />
+<img src="src/assets/images/z6672042511124_1b52951d60d0a5ed0f0ed80025da0ce3.jpg" alt="Weather App Preview" style="max-width: 420px; border-radius: 12px; box-shadow: 0 4px 24px rgba(31,38,135,0.13); margin-bottom: 1.5rem;" />
 
 ---
 
