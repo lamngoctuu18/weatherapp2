@@ -4,7 +4,7 @@
 
 ## 👀 Preview
 
-<img src="https://user-images.githubusercontent.com/placeholder/weatherapp-preview.png" alt="Weather App Preview" style="max-width: 420px; border-radius: 12px; box-shadow: 0 4px 24px rgba(31,38,135,0.13); margin-bottom: 1.5rem;" />
+<img src="attachments/z6672042511124_1b52951d60d0a5ed0f0ed80025da0ce3.jpg" alt="Weather App Preview" style="max-width: 420px; border-radius: 12px; box-shadow: 0 4px 24px rgba(31,38,135,0.13); margin-bottom: 1.5rem;" />
 
 ---
 
@@ -123,7 +123,3 @@ npm start
 - Bạn có thể sử dụng, chỉnh sửa, phát triển lại cho mục đích cá nhân hoặc học tập.
 
 ---
-
-**Tác giả:**  
-Weather App - Lâm Ngọc Tú  
-2025
