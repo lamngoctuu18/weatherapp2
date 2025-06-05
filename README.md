@@ -2,6 +2,12 @@
 
 ---
 
+## 👀 Preview
+
+<img src="https://user-images.githubusercontent.com/placeholder/weatherapp-preview.png" alt="Weather App Preview" style="max-width: 420px; border-radius: 12px; box-shadow: 0 4px 24px rgba(31,38,135,0.13); margin-bottom: 1.5rem;" />
+
+---
+
 ## 🚀 Giới thiệu
 
 **Weather App** là ứng dụng web dự báo thời tiết trực quan, sinh động, sử dụng ReactJS, Axios và hiệu ứng động Lottie. Ứng dụng hỗ trợ tìm kiếm thời tiết theo thành phố, dự báo theo giờ/ngày, lưu lịch sử, hiệu ứng nền động theo điều kiện thời tiết, giao diện hiện đại và responsive trên mọi thiết bị.

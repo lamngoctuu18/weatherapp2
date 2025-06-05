@@ -25,7 +25,6 @@ function App() {
   const [hourlyWeather, setHourlyWeather] = useState([]);
   const [dailyWeather, setDailyWeather] = useState([]); // Thêm state lưu dự báo ngày
   const [history, setHistory] = useState(() => {
-    // Lấy lịch sử từ localStorage nếu có
     const saved = localStorage.getItem("weatherHistory");
     return saved ? JSON.parse(saved) : [];
   });
@@ -204,7 +203,6 @@ function App() {
     bgDiv.innerHTML = "";
 
     if (effect === "rain") {
-      // Hiệu ứng mưa đơn giản bằng canvas
       const canvas = document.createElement("canvas");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -250,100 +248,6 @@ function App() {
       drawRain();
       return () => {
         cancelAnimationFrame(animationId);
-        bgDiv.innerHTML = "";
-      };
-    }
-
-    if (effect === "cloud" || effect === "cloudy") {
-      // Hiệu ứng mây trôi bằng CSS
-      const cloudDiv = document.createElement("div");
-      cloudDiv.className = "weather-clouds-bg";
-      bgDiv.appendChild(cloudDiv);
-      // tạo 3 đám mây
-      for (let i = 0; i < 3; i++) {
-        const cloud = document.createElement("div");
-        cloud.className = "cloud-anim cloud-anim-" + i;
-        cloudDiv.appendChild(cloud);
-      }
-      return () => {
-        bgDiv.innerHTML = "";
-      };
-    }
-
-    if (effect === "storm") {
-      // Hiệu ứng sét chớp và mưa mạnh
-      const stormDiv = document.createElement("div");
-      stormDiv.className = "weather-storm-bg";
-      bgDiv.appendChild(stormDiv);
-
-      // Sét chớp
-      let flashTimeout;
-      function flash() {
-        stormDiv.style.background = "rgba(255,255,255,0.25)";
-        setTimeout(() => {
-          stormDiv.style.background = "";
-        }, 80);
-        flashTimeout = setTimeout(flash, 2000 + Math.random() * 2000);
-      }
-      flash();
-      // Mưa mạnh (dùng lại hiệu ứng mưa)
-      const canvas = document.createElement("canvas");
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      canvas.style.position = "fixed";
-      canvas.style.top = 0;
-      canvas.style.left = 0;
-      canvas.style.width = "100vw";
-      canvas.style.height = "100vh";
-      canvas.style.pointerEvents = "none";
-      canvas.style.zIndex = 0;
-      stormDiv.appendChild(canvas);
-
-      const ctx = canvas.getContext("2d");
-      const drops = Array.from({ length: 160 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        l: 18 + Math.random() * 22,
-        xs: -2 + Math.random() * 4,
-        ys: 14 + Math.random() * 10,
-      }));
-
-      let animationId;
-      function drawRain() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "rgba(120,140,200,0.45)";
-        ctx.lineWidth = 1.5;
-        ctx.lineCap = "round";
-        for (let i = 0; i < drops.length; i++) {
-          const d = drops[i];
-          ctx.beginPath();
-          ctx.moveTo(d.x, d.y);
-          ctx.lineTo(d.x + d.xs, d.y + d.l);
-          ctx.stroke();
-          d.x += d.xs;
-          d.y += d.ys;
-          if (d.y > canvas.height) {
-            d.x = Math.random() * canvas.width;
-            d.y = -20;
-          }
-        }
-        animationId = requestAnimationFrame(drawRain);
-      }
-      drawRain();
-
-      return () => {
-        clearTimeout(flashTimeout);
-        cancelAnimationFrame(animationId);
-        bgDiv.innerHTML = "";
-      };
-    }
-
-    if (effect === "clear") {
-      // Hiệu ứng mặt trời quay nhẹ
-      const sunDiv = document.createElement("div");
-      sunDiv.className = "weather-sun-bg";
-      bgDiv.appendChild(sunDiv);
-      return () => {
         bgDiv.innerHTML = "";
       };
     }

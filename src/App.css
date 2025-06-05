@@ -12,7 +12,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Gradient động mượt mà */
 @keyframes gradientMove {
   0% {
     background-position: 0% 50%;
@@ -36,7 +35,7 @@ body {
   border: 1px solid rgba(255,255,255,0.18);
   position: relative;
   z-index: 1;
-  overflow: hidden; /* Đảm bảo hiệu ứng nền không tràn ra ngoài */
+  overflow: hidden; 
 }
 
 h1 {
@@ -106,7 +105,7 @@ button:hover {
   min-height: 220px;
   animation: fadeIn 0.7s;
   position: relative;
-  overflow: hidden; /* Đảm bảo hiệu ứng không tràn ra ngoài */
+  overflow: hidden;
 }
 
 .weather-card-fade {
@@ -143,8 +142,6 @@ button:hover {
   filter: drop-shadow(0 2px 8px rgba(33,147,176,0.13));
 }
 
-/* Bo tròn góc cho thanh cuộn ngang trong weather-card */
-.weather-card::-webkit-scrollbar,
 .weather-card div::-webkit-scrollbar {
   height: 8px;
   background: transparent;
@@ -169,7 +166,6 @@ button:hover {
   border-radius: 8px;
 }
 
-/* Style thanh cuộn ngang lịch sử tìm kiếm giống hoàn toàn thanh dự báo */
 .container > div > div[style*="overflow-x: auto"]::-webkit-scrollbar {
   height: 8px;
   background: transparent;
@@ -338,7 +334,7 @@ button:hover {
   100% { left: 110vw;}
 }
 
-/* Hiệu ứng storm (sét chớp) */
+/* Hiệu ứng storm */
 .weather-storm-bg {
   position: fixed;
   inset: 0;
@@ -351,7 +347,7 @@ button:hover {
 /* Hiệu ứng động bên trong card thời tiết */
 .weather-card {
   position: relative;
-  overflow: hidden; /* Đảm bảo hiệu ứng không tràn ra ngoài */
+  overflow: hidden; 
 }
 
 /* Mặt trời động nhỏ bên trong card khi trời nắng */
@@ -553,7 +549,6 @@ button:hover {
   background: none;
 }
 
-/* Thông tin chi tiết: các ô info đẹp, hiện đại, responsive */
 .weather-card-info-row {
   display: flex;
   justify-content: center;
