@@ -5,7 +5,14 @@ import "./App.css";
 
 const API_KEY = "90ed417a48c3627d0549d3da4910bf2d";
 
-// Hàm map weather icon code sang lottie type
+            <div className="header-brand">
+              <h1>
+                <span role="img" aria-label="weather">🌤️</span>
+                Weather App
+              </h1>
+            </div>
+            
+            <div className="header-search">m map weather icon code sang lottie type
 function mapWeatherIconToType(iconCode) {
   if (!iconCode) return 'cloudy';
   if (iconCode.includes('01')) return 'sunny';
@@ -23,7 +30,7 @@ function App() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [hourlyWeather, setHourlyWeather] = useState([]);
-  const [dailyWeather, setDailyWeather] = useState([]);
+  const [dailyWeather, setDailyWeather] = useState([]); // Thêm state lưu dự báo ngày
   const [history, setHistory] = useState(() => {
     const saved = localStorage.getItem("weatherHistory");
     return saved ? JSON.parse(saved) : [];
@@ -31,7 +38,7 @@ function App() {
   const [showAllHistory, setShowAllHistory] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const weatherBgRef = useRef(null);
-  const [cardKey, setCardKey] = useState(0);
+  const [cardKey, setCardKey] = useState(0); // key để trigger hiệu ứng
 
   useEffect(() => {
     const lastCity = localStorage.getItem("lastCity");
@@ -50,39 +57,51 @@ function App() {
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric&lang=vi`
       );
       setWeather(res.data);
-      setCardKey((k) => k + 1);
-      setCity("");
+      setCardKey((k) => k + 1); // Thay đổi key để hiệu ứng chuyển động
       localStorage.setItem("lastCity", cityName);
-      
-      // Thêm vào lịch sử
-      const newHistory = [
-        { name: res.data.name, temp: Math.round(res.data.main.temp), time: Date.now() },
-        ...history.filter((item) => item.name !== res.data.name),
-      ].slice(0, 10);
-      setHistory(newHistory);
-      localStorage.setItem("weatherHistory", JSON.stringify(newHistory));
 
-      // Fetch hourly forecast
-      try {
-        const forecastRes = await axios.get(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric&lang=vi`
+      // Lấy dữ liệu dự báo theo giờ và ngày
+      const forecastRes = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric&lang=vi`
+      );
+      // Lấy 24 mẫu tiếp theo (3h/mẫu, đủ 3 ngày)
+      setHourlyWeather(forecastRes.data.list.slice(0, 24));
+
+      // Xử lý dự báo ngày (lấy 1 mẫu mỗi ngày, thường là mẫu 12:00)
+      const dailyMap = {};
+      forecastRes.data.list.forEach((item) => {
+        const date = item.dt_txt.split(" ")[0];
+        const hour = item.dt_txt.split(" ")[1].split(":")[0];
+        // Ưu tiên mẫu 12:00, nếu không có thì lấy mẫu đầu tiên của ngày
+        if (!dailyMap[date] || hour === "12") {
+          dailyMap[date] = item;
+        }
+      });
+      // Lấy 5 ngày tiếp theo (bỏ ngày hiện tại)
+      const today = new Date().toISOString().split("T")[0];
+      const dailyArr = Object.keys(dailyMap)
+        .filter((date) => date !== today)
+        .slice(0, 5)
+        .map((date) => dailyMap[date]);
+      setDailyWeather(dailyArr);
+
+      // Cập nhật lịch sử tìm kiếm
+      setHistory((prev) => {
+        const filtered = prev.filter(
+          (item) => item.name.toLowerCase() !== res.data.name.toLowerCase()
         );
-        setHourlyWeather(forecastRes.data.list);
-        
-        // Group by date for daily forecast
-        const dailyMap = {};
-        forecastRes.data.list.forEach(item => {
-          const date = item.dt_txt.split(' ')[0];
-          if (!dailyMap[date]) {
-            dailyMap[date] = item;
-          }
-        });
-        setDailyWeather(Object.values(dailyMap));
-      } catch (error) {
-        console.log("Không lấy được dự báo:", error);
-      }
+        const newHistory = [
+          {
+            name: res.data.name,
+            temp: Math.round(res.data.main.temp),
+          },
+          ...filtered,
+        ].slice(0, 8); // Giới hạn 8 thành phố gần nhất
+        localStorage.setItem("weatherHistory", JSON.stringify(newHistory));
+        return newHistory;
+      });
     } catch (error) {
-      alert("Không tìm thấy thành phố này!");
+      alert("Không tìm thấy thành phố!");
       setWeather(null);
       setHourlyWeather([]);
       setDailyWeather([]);
@@ -96,6 +115,7 @@ function App() {
     }
   };
 
+  // Hàm làm mới dữ liệu thời tiết cho thành phố hiện tại
   const handleRefresh = () => {
     if (weather && weather.name) {
       fetchWeather(weather.name);
@@ -186,30 +206,30 @@ function App() {
     const bgDiv = weatherBgRef.current;
     if (!bgDiv) return;
 
-    // Rain effect
+    // Xóa hiệu ứng cũ
+    bgDiv.innerHTML = "";
+
     if (effect === "rain") {
       const canvas = document.createElement("canvas");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       canvas.style.position = "fixed";
-      canvas.style.top = "0";
-      canvas.style.left = "0";
+      canvas.style.top = 0;
+      canvas.style.left = 0;
+      canvas.style.width = "100vw";
+      canvas.style.height = "100vh";
       canvas.style.pointerEvents = "none";
-      canvas.style.zIndex = "1";
-      canvas.style.opacity = "0.6";
+      canvas.style.zIndex = 0;
       bgDiv.appendChild(canvas);
 
       const ctx = canvas.getContext("2d");
-      const drops = [];
-      for (let i = 0; i < 100; i++) {
-        drops.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          l: Math.random() * 20 + 10,
-          xs: Math.random() * 4 + 4,
-          ys: Math.random() * 10 + 10,
-        });
-      }
+      const drops = Array.from({ length: 80 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        l: 10 + Math.random() * 15,
+        xs: -2 + Math.random() * 4,
+        ys: 8 + Math.random() * 8,
+      }));
 
       let animationId;
       function drawRain() {
@@ -245,140 +265,143 @@ function App() {
     : 'cloudy';
 
   return (
-    <React.Fragment>
-      <WeatherBackground ref={weatherBgRef} />
-      <div className="container">
+  <React.Fragment>
+    <WeatherBackground ref={weatherBgRef} />
+    <div className="container">
         {/* Header Section */}
         <div className="app-header">
           <div className="header-content">
-            <div className="header-brand">
-              <h1>
-                <span role="img" aria-label="weather">🌤️</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+              <h1 style={{ margin: 0, fontSize: '2.2rem', fontWeight: 700, color: '#fff', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span role="img" aria-label="weather">�️</span>
                 Weather App
               </h1>
-            </div>
-            
-            <div className="header-search">
-              <form onSubmit={handleSubmit} className="search-form">
-                <div className="search-input-group">
-                  <input
-                    type="text"
-                    placeholder="Nhập tên thành phố..."
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className="search-input"
-                  />
-                  <div className="search-buttons">
-                    <button
-                      type="button"
-                      className="search-btn-icon"
-                      onClick={handleGeo}
-                      title="Lấy vị trí hiện tại"
-                    >
-                      📍
-                    </button>
-                    <button
-                      type="button"
-                      className="search-btn-icon"
-                      onClick={handleVoice}
-                      title="Tìm kiếm bằng giọng nói"
-                    >
-                      🎤
-                    </button>
-                    <button type="submit" className="search-btn-primary" title="Tìm kiếm">
-                      🔍
-                    </button>
-                  </div>
-                </div>
+              <form onSubmit={handleSubmit} className="form-search-bar" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.08)', borderRadius: '12px', padding: '0.2rem 0.6rem' }}>
+                <input
+                  type="text"
+                  placeholder="Nhập tên thành phố "
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  style={{ minWidth: 160, borderRadius: 8, border: 'none', padding: '8px 12px', fontSize: '1rem', background: 'rgba(255,255,255,0.15)', color: '#222', outline: 'none' }}
+                />
+                <button
+                  type="button"
+                  className="icon-btn gps"
+                  onClick={handleGeo}
+                  title="Lấy vị trí hiện tại"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+                >
+                  <span className="circle">
+                    <span className="icon" role="img" aria-label="gps">📍</span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="icon-btn voice"
+                  onClick={handleVoice}
+                  title="Tìm kiếm bằng giọng nói"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+                >
+                  <span className="circle">
+                    <span className="icon" role="img" aria-label="micro">🎤</span>
+                  </span>
+                </button>
+                <button type="submit" className="search-btn" title="Tìm kiếm" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                  <span className="icon" role="img" aria-label="search">🔍</span>
+                </button>
               </form>
             </div>
-
-            <div className="header-theme">
-              <button 
-                className="theme-toggle-btn"
-                onClick={() => setIsDark((d) => !d)}
-                title="Chuyển chế độ sáng/tối"
-              >
-                {isDark ? "🌙" : "☀️"}
-              </button>
+            <div 
+              className="theme-toggle"
+              title="Chuyển chế độ sáng/tối"
+              onClick={() => setIsDark((d) => !d)}
+              style={{
+                fontSize: "1.5rem",
+                cursor: "pointer",
+                color: '#ffd600',
+                background: 'rgba(255,255,255,0.12)',
+                borderRadius: '50%',
+                padding: '0.4rem 0.7rem',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+              }}
+            >
+              {isDark ? "🌙" : "☀️"}
             </div>
           </div>
-        </div>
 
         {/* Sidebar Section */}
         <div className="app-sidebar">
-          {/* Hiển thị lịch sử tìm kiếm */}
-          {history.length > 0 && (
-            <div style={{ margin: "1rem 0 0.5rem 0" }}>
-              <div style={{ fontWeight: 600, color: "#1976d2", marginBottom: 6 }}>
-                Lịch sử tìm kiếm
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: 10,
-                  overflowX: "auto",
-                  maxWidth: "100%",
-                  paddingBottom: 4,
-                  scrollbarWidth: "thin",
-                }}
-              >
-                {(showAllHistory ? history : history.slice(0, 4)).map((item) => (
-                  <button
-                    key={item.name}
-                    style={{
-                      background: "rgba(255,255,255,0.8)",
-                      border: "1px solid #90caf9",
-                      borderRadius: 18,
-                      padding: "6px 14px",
-                      cursor: "pointer",
-                      fontWeight: 500,
-                      color: "#1976d2",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      fontSize: "1rem",
-                      boxShadow: "0 1px 4px rgba(44,62,80,0.07)",
-                      whiteSpace: "nowrap",
-                      marginBottom: 2,
-                    }}
-                    onClick={() => fetchWeather(item.name)}
-                    title={`Xem thời tiết ${item.name}`}
-                  >
-                    <span>{item.name}</span>
-                    <span style={{
-                      fontWeight: 700,
-                      color: item.temp <= 20 ? "#2196f3" : item.temp >= 35 ? "#e53935" : "#fb8c00"
-                    }}>
-                      {item.temp}°C
-                    </span>
-                  </button>
-                ))}
-                {history.length > 4 && (
-                  <button
-                    style={{
-                      background: "#e3f2fd",
-                      border: "1px solid #90caf9",
-                      borderRadius: 18,
-                      padding: "6px 14px",
-                      cursor: "pointer",
-                      fontWeight: 500,
-                      color: "#1976d2",
-                      fontSize: "1rem",
-                      boxShadow: "0 1px 4px rgba(44,62,80,0.07)",
-                      whiteSpace: "nowrap",
-                      marginBottom: 2,
-                    }}
-                    onClick={() => setShowAllHistory((v) => !v)}
-                  >
-                    {showAllHistory ? "Ẩn bớt" : `+${history.length - 4} Xem thêm`}
-                  </button>
-                )}
-              </div>
+        {/* Hiển thị lịch sử tìm kiếm dạng scroll ngang, tối đa 4 mục, còn lại ẩn */}
+        {history.length > 0 && (
+          <div style={{ margin: "1rem 0 0.5rem 0" }}>
+            <div style={{ fontWeight: 600, color: "#1976d2", marginBottom: 6 }}>
+              Lịch sử tìm kiếm
             </div>
-          )}
-
-          {/* Quick Stats Component */}
+            <div
+              style={{
+                display: "flex",
+                gap: 10,
+                overflowX: "auto",
+                maxWidth: "100%",
+                paddingBottom: 4,
+                scrollbarWidth: "thin",
+              }}
+            >
+              {(showAllHistory ? history : history.slice(0, 4)).map((item) => (
+                <button
+                  key={item.name}
+                  style={{
+                    background: "rgba(255,255,255,0.8)",
+                    border: "1px solid #90caf9",
+                    borderRadius: 18,
+                    padding: "6px 14px",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                    color: "#1976d2",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    fontSize: "1rem",
+                    boxShadow: "0 1px 4px rgba(44,62,80,0.07)",
+                    whiteSpace: "nowrap",
+                    marginBottom: 2,
+                  }}
+                  onClick={() => fetchWeather(item.name)}
+                  title={`Xem thời tiết ${item.name}`}
+                >
+                  <span>{item.name}</span>
+                  <span style={{
+                    fontWeight: 700,
+                    color: item.temp <= 20 ? "#2196f3" : item.temp >= 35 ? "#e53935" : "#fb8c00"
+                  }}>
+                    {item.temp}°C
+                  </span>
+                </button>
+              ))}
+              {history.length > 4 && (
+                <button
+                  style={{
+                    background: "#e3f2fd",
+                    border: "1px solid #90caf9",
+                    borderRadius: 18,
+                    padding: "6px 14px",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                    color: "#1976d2",
+                    fontSize: "1rem",
+                    boxShadow: "0 1px 4px rgba(44,62,80,0.07)",
+                    whiteSpace: "nowrap",
+                    marginBottom: 2,
+                  }}
+                  onClick={() => setShowAllHistory((v) => !v)}
+                >
+                  {showAllHistory ? "Ẩn bớt" : `+${history.length - 4} Xem thêm`}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+          {/* Quick Stats Component (Desktop/Tablet) */}
           {weather && (
             <QuickStats data={weather} />
           )}
@@ -463,14 +486,15 @@ function App() {
           )}
         </div>
 
-        {/* Info Panel Section */}
+        {/* Info Panel Section (Large Desktop) */}
         <div className="app-info">
           {weather && (
             <WeatherInsights data={weather} hourly={hourlyWeather} />
           )}
         </div>
       </div>
-    </React.Fragment>
+    </div> {/* Đóng div .container */}
+  </React.Fragment>
   );
 }
 

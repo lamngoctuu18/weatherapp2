@@ -23,20 +23,21 @@ function getTempColor(temp) {
 
 function getLottieEffect(main) {
   if (main === "Clear") {
-    return { anim: sunnyAnim, style: { top: 18, left: 10, width: 80, height: 80 } };
+    return { anim: sunnyAnim, style: { top: 10, right: 10, width: 50, height: 50, opacity: 0.4 } };
   }
   if (main === "Clouds") {
-    return { anim: cloudyAnim, style: { top: 18, left: 10, width: 80, height: 80 } };
+    return { anim: cloudyAnim, style: { top: 10, right: 10, width: 50, height: 50, opacity: 0.4 } };
   }
   if (main === "Rain" || main === "Drizzle") {
     return {
       anim: rainAnim,
       style: {
         top: 10,
-        left: 10,
-        width: 110,
-        height: 110,
-        filter: "drop-shadow(0 0 8px #2196f3) drop-shadow(0 0 16px #1976d2)"
+        right: 10,
+        width: 55,
+        height: 55,
+        opacity: 0.5,
+        filter: "drop-shadow(0 0 3px #2196f3)"
       }
     };
   }
@@ -45,10 +46,11 @@ function getLottieEffect(main) {
       anim: snowAnim,
       style: {
         top: 10,
-        left: 10,
-        width: 110,
-        height: 110,
-        filter: "drop-shadow(0 0 8px #2196f3) drop-shadow(0 0 16px #1976d2)"
+        right: 10,
+        width: 55,
+        height: 55,
+        opacity: 0.5,
+        filter: "drop-shadow(0 0 4px #b3e5fc)"
       }
     };
   }
@@ -57,10 +59,10 @@ function getLottieEffect(main) {
       anim: fogAnim,
       style: {
         top: 10,
-        left: 10,
-        width: 110,
-        height: 110,
-        filter: "drop-shadow(0 0 8px #2196f3) drop-shadow(0 0 16px #1976d2)"
+        right: 10,
+        width: 50,
+        height: 50,
+        opacity: 0.4
       }
     };
   }
@@ -69,14 +71,15 @@ function getLottieEffect(main) {
       anim: stormAnim,
       style: {
         top: 10,
-        left: 10,
-        width: 110,
-        height: 110,
-        filter: "drop-shadow(0 0 8px #2196f3) drop-shadow(0 0 16px #1976d2)"
+        right: 10,
+        width: 60,
+        height: 60,
+        opacity: 0.6,
+        filter: "drop-shadow(0 0 6px #ff9800)"
       }
     };
   }
-  return null;
+  return { anim: cloudyAnim, style: { top: 20, right: 20, width: 60, height: 60, opacity: 0.6 } };
 }
 
 function getCardBg(main, bgGradient) {
@@ -119,20 +122,22 @@ const WeatherCard = ({ data, hourly = [], daily = [], onRefresh, bgGradient }) =
 
   return (
     <div
-      className="weather-card"
+      className="weather-card modern-card"
       style={{
-        background: cardBg,
+        background: `linear-gradient(135deg, ${cardBg} 0%, rgba(255,255,255,0.2) 100%)`,
         color: "#222",
-        transition: "background 0.5s",
+        transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
         position: "relative",
-        boxShadow: "0 4px 24px 0 rgba(31,38,135,0.13)",
-        borderRadius: 16,
+        boxShadow: "0 8px 32px rgba(31,38,135,0.15), 0 2px 8px rgba(0,0,0,0.1)",
+        borderRadius: 24,
         marginTop: "1rem",
-        minHeight: 220,
-        animation: "fadeIn 0.7s",
+        minHeight: 280,
+        animation: "fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
         willChange: "transform, box-shadow",
         cursor: "default",
-        overflow: "hidden"
+        overflow: "hidden",
+        border: "1px solid rgba(255,255,255,0.2)",
+        backdropFilter: "blur(20px)"
       }}
       tabIndex={0}
     >
@@ -142,111 +147,269 @@ const WeatherCard = ({ data, hourly = [], daily = [], onRefresh, bgGradient }) =
           <Lottie animationData={lottie.anim} loop autoplay style={{ width: "100%", height: "100%" }} />
         </div>
       )}
-      <h2 style={{ marginTop: 0 }}>{name}</h2>
-      <div className="weather-icon" style={{ fontSize: "3.5rem" }}>
-        {getWeatherIcon(weather[0].main)}
+      {/* Header Section - Compact */}
+      <div className="weather-header" style={{ 
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "space-between", 
+        width: "100%",
+        marginBottom: "1rem",
+        padding: "1rem",
+        background: "rgba(255,255,255,0.1)",
+        borderRadius: "16px",
+        backdropFilter: "blur(20px)",
+        border: "1px solid rgba(255,255,255,0.2)",
+        boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+        position: "relative",
+        zIndex: 5
+      }}>
+        <div style={{ flex: 1, zIndex: 6 }}>
+          <h2 style={{ 
+            marginTop: 0, 
+            marginBottom: "0.3rem",
+            fontSize: "1.6rem",
+            fontWeight: 700,
+            color: "#ffffff",
+            textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+            letterSpacing: "0.5px"
+          }}>{name}</h2>
+          <p style={{
+            fontStyle: "normal",
+            color: "rgba(255,255,255,0.9)",
+            margin: 0,
+            textTransform: "capitalize",
+            fontWeight: 500,
+            fontSize: "1rem",
+            letterSpacing: 0.3,
+            textShadow: "0 1px 4px rgba(0,0,0,0.3)"
+          }}>
+            {weather[0].description}
+          </p>
+        </div>
+        <div style={{ 
+          display: "flex", 
+          alignItems: "center",
+          gap: "0.8rem",
+          zIndex: 6
+        }}>
+          <div className="weather-icon" style={{ 
+            fontSize: "2.5rem", 
+            filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))"
+          }}>
+            {getWeatherIcon(weather[0].main)}
+          </div>
+          <p style={{
+            fontFamily: "'Bebas Neue', 'Poppins', Arial, sans-serif",
+            fontSize: "2.2rem",
+            fontWeight: 800,
+            color: getTempColor(main.temp),
+            margin: 0,
+            letterSpacing: 1,
+            transition: "color 0.3s",
+            textShadow: "0 2px 8px rgba(0,0,0,0.4)",
+          }}>
+            {Math.round(main.temp)}°C
+          </p>
+        </div>
       </div>
-      <p
-        style={{
-          fontFamily: "'Bebas Neue', 'Poppins', Arial, sans-serif",
-          fontSize: "2.7rem",
-          fontWeight: 800,
-          color: getTempColor(main.temp),
-          margin: "0.5rem 0 0.2rem 0",
-          letterSpacing: 1,
-          transition: "color 0.3s",
-          textShadow: "0 2px 8px rgba(33,147,176,0.13)",
-        }}
-      >
-        {Math.round(main.temp)}°C
-      </p>
-      <p
-        style={{
-          fontStyle: "normal",
-          color: "#2d9cdb",
-          margin: 0,
-          textTransform: "capitalize",
-          fontWeight: 500,
-          fontSize: "1.1rem",
-          letterSpacing: 0.2,
-        }}
-      >
-        {weather[0].description}
-      </p>
-      {/* Thông tin chi tiết: 2 hàng 4 cột */}
-      <div style={{ margin: "1.1rem 0 0.5rem 0", width: "100%" }}>
-        {[...infoRows, lastRow].map((row, rowIdx) => (
+      {/* Thông tin chi tiết: Optimized Grid */}
+      <div style={{ 
+        margin: "1rem 0", 
+        width: "100%",
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "12px",
+        position: "relative",
+        zIndex: 10
+      }}>
+        {info.slice(0, 6).map((item) => (
           <div
-            key={rowIdx}
-            className="weather-card-info-row"
+            key={item.label}
+            className="weather-card-info-box modern-info-box"
+            title={item.tip}
+            style={{
+              background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)",
+              borderRadius: "16px",
+              padding: "1rem 0.8rem",
+              textAlign: "center",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              backdropFilter: "blur(20px)",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              cursor: "pointer",
+              position: "relative"
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = "translateY(-3px) scale(1.02)";
+              e.target.style.background = "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.15) 100%)";
+              e.target.style.boxShadow = "0 8px 24px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "translateY(0) scale(1)";
+              e.target.style.background = "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)";
+              e.target.style.boxShadow = "0 4px 16px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)";
+            }}
           >
-            {row.map((item) => (
-              <div
-                key={item.label}
-                className="weather-card-info-box"
-                title={item.tip}
-              >
-                <span className="info-icon">{item.icon}</span>
-                <div className="info-label">{item.label}</div>
-                <div className="info-value">{item.value}</div>
-              </div>
-            ))}
+            <span className="info-icon" style={{ 
+              fontSize: "1.5rem", 
+              display: "block", 
+              marginBottom: "0.5rem",
+              filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))"
+            }}>{item.icon}</span>
+            <div className="info-label" style={{
+              fontSize: "0.75rem",
+              color: "rgba(255,255,255,0.9)",
+              fontWeight: 600,
+              marginBottom: "0.3rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px"
+            }}>{item.label}</div>
+            <div className="info-value" style={{
+              fontWeight: 700,
+              fontSize: "1rem",
+              color: "#ffffff",
+              textShadow: "0 1px 3px rgba(0,0,0,0.3)"
+            }}>{item.value}</div>
           </div>
         ))}
       </div>
-      {/* Dự báo theo giờ: hiển thị đủ 24 mẫu, gồm cả các ngày sau */}
+      
+      {/* Thông tin bổ sung */}
+      {info.length > 6 && (
+        <div style={{ 
+          margin: "0.5rem 0", 
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "12px",
+          position: "relative",
+          zIndex: 10
+        }}>
+          {info.slice(6, 9).map((item) => (
+            <div
+              key={item.label}
+              className="weather-card-info-box modern-info-box"
+              title={item.tip}
+              style={{
+                background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)",
+                borderRadius: "14px",
+                padding: "0.8rem 0.6rem",
+                textAlign: "center",
+                boxShadow: "0 3px 12px rgba(0,0,0,0.08)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                backdropFilter: "blur(15px)",
+                transition: "all 0.3s ease",
+                cursor: "pointer"
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "translateY(-2px)";
+                e.target.style.background = "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.background = "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)";
+              }}
+            >
+              <span className="info-icon" style={{ 
+                fontSize: "1.2rem", 
+                display: "block", 
+                marginBottom: "0.3rem" 
+              }}>{item.icon}</span>
+              <div className="info-label" style={{
+                fontSize: "0.7rem",
+                color: "rgba(255,255,255,0.8)",
+                fontWeight: 500,
+                marginBottom: "0.2rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.3px"
+              }}>{item.label}</div>
+              <div className="info-value" style={{
+                fontWeight: 700,
+                fontSize: "0.9rem",
+                color: "#ffffff"
+              }}>{item.value}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* Dự báo theo giờ: Compact */}
       {allHours && allHours.length > 0 && (
-        <div style={{ marginTop: "1.2rem", width: "100%" }}>
-          <div style={{ fontWeight: 600, marginBottom: 8, color: "#1976d2" }}>
-            Dự báo 24h tiếp theo
+        <div style={{ marginTop: "1rem", width: "100%" }}>
+          <div style={{ 
+            fontWeight: 600, 
+            marginBottom: "0.8rem", 
+            color: "#ffffff",
+            fontSize: "1rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem"
+          }}>
+            <span>🕐</span>
+            Dự báo 24h
           </div>
           <div
+            className="hourly-forecast-container"
             style={{
               display: "flex",
-              gap: 12,
+              gap: 8,
               overflowX: "auto",
-              justifyContent: "flex-start",
-              paddingBottom: 6,
+              paddingBottom: 12,
+              scrollSnapType: "x mandatory",
+              scrollbarWidth: "thin",
+              scrollbarColor: "rgba(255,255,255,0.4) rgba(255,255,255,0.1)"
             }}
           >
-            {allHours.map((item, idx) => {
+            {allHours.slice(0, 12).map((item, idx) => {
               const date = new Date(item.dt_txt);
               const hour = date.getHours();
-              const day = date.getDate();
-              const month = date.getMonth() + 1;
-              const label =
-                idx === 0
-                  ? "Bây giờ"
-                  : `${hour}h${(idx > 0 && (hour === 0 || idx % 8 === 0)) ? `\n${day}/${month}` : ""}`;
+              const label = idx === 0 ? "Bây giờ" : `${hour}h`;
               return (
                 <div
                   key={item.dt}
+                  className="hourly-item"
                   style={{
-                    background: "rgba(255,255,255,0.7)",
-                    borderRadius: 10,
-                    padding: "0.5rem 0.7rem",
+                    background: idx === 0 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.1)",
+                    borderRadius: 12,
+                    padding: "0.8rem 0.6rem",
                     minWidth: 70,
                     textAlign: "center",
-                    boxShadow: "0 2px 8px rgba(44,62,80,0.07)",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                    border: idx === 0 ? "1px solid rgba(255,255,255,0.3)" : "1px solid rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(10px)",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    scrollSnapAlign: "start",
+                    cursor: "pointer"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.background = "rgba(255,255,255,0.2)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.background = idx === 0 ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.1)";
                   }}
                 >
-                  <div
-                    style={{
-                      fontWeight: idx === 0 ? 700 : 500,
-                      color: idx === 0 ? "#1976d2" : "#444",
-                      whiteSpace: "pre-line",
-                    }}
-                  >
+                  <div style={{
+                    fontWeight: idx === 0 ? 700 : 500,
+                    color: "#ffffff",
+                    fontSize: "0.75rem",
+                    marginBottom: "0.5rem"
+                  }}>
                     {label}
                   </div>
-                  <div style={{ fontSize: "1.5rem" }}>
+                  <div style={{ 
+                    fontSize: "1.5rem", 
+                    margin: "0.3rem 0",
+                    filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))"
+                  }}>
                     {getWeatherIcon(item.weather[0].main)}
                   </div>
-                  <div style={{ fontWeight: 600 }}>
+                  <div style={{ 
+                    fontWeight: 700, 
+                    fontSize: "0.9rem",
+                    color: getTempColor(item.main.temp),
+                  }}>
                     {Math.round(item.main.temp)}°C
-                  </div>
-                  <div style={{ fontSize: "0.85rem", color: "#1976d2", textTransform: "capitalize", fontStyle: "normal" }}>
-                    {item.weather[0].description}
                   </div>
                 </div>
               );
@@ -256,101 +419,181 @@ const WeatherCard = ({ data, hourly = [], daily = [], onRefresh, bgGradient }) =
       )}
       {/* Dự báo các ngày tiếp theo */}
       {daily && daily.length > 0 && (
-        <div style={{ marginTop: "1.5rem", width: "100%" }}>
-          <div style={{ fontWeight: 600, marginBottom: 8, color: "#1976d2" }}>
-            Dự báo các ngày tới
+        <div style={{ marginTop: "1rem", width: "100%" }}>
+          <div style={{ 
+            fontWeight: 600, 
+            marginBottom: "0.8rem", 
+            color: "#ffffff",
+            fontSize: "1rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem"
+          }}>
+            <span>📅</span>
+            Dự báo 7 ngày
           </div>
           <div
+            className="daily-forecast-container"
             style={{
               display: "flex",
-              gap: 12,
+              gap: 8,
               overflowX: "auto",
-              justifyContent: "flex-start",
-              paddingBottom: 6,
+              paddingBottom: 12,
               scrollSnapType: "x mandatory",
+              scrollbarWidth: "thin",
+              scrollbarColor: "rgba(255,255,255,0.4) rgba(255,255,255,0.1)"
             }}
           >
             {/* Dự báo bây giờ */}
             <div
+              className="daily-item current"
               style={{
-                background: "rgba(255,255,255,0.7)",
-                borderRadius: 10,
-                padding: "0.7rem 1rem",
-                minWidth: 90,
+                background: "rgba(33, 150, 243, 0.12)",
+                borderRadius: 8,
+                padding: "0.6rem 0.5rem",
+                minWidth: 75,
                 textAlign: "center",
-                boxShadow: "0 2px 8px rgba(44,62,80,0.07)",
-                border: "2px solid #1976d2",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                border: "1px solid rgba(33, 150, 243, 0.2)",
                 scrollSnapAlign: "start",
-                flex: "0 0 auto"
+                flex: "0 0 auto",
+                backdropFilter: "blur(10px)",
+                transition: "all 0.3s ease",
+                cursor: "pointer"
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "translateY(-2px)";
+                e.target.style.background = "rgba(33, 150, 243, 0.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.background = "rgba(33, 150, 243, 0.12)";
               }}
             >
-              <div style={{ fontWeight: 600, color: "#1976d2" }}>Bây giờ</div>
-              <div style={{ fontSize: "1.5rem" }}>
+              <div style={{ 
+                fontWeight: 600, 
+                color: "#ffffff", 
+                fontSize: "0.7rem",
+                marginBottom: "0.3rem"
+              }}>Bây giờ</div>
+              <div style={{ 
+                fontSize: "1.5rem", 
+                margin: "0.2rem 0",
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))"
+              }}>
                 {getWeatherIcon(weather[0].main)}
               </div>
-              <div style={{ fontWeight: 700, color: getTempColor(main.temp) }}>
+              <div style={{ 
+                fontWeight: 700, 
+                color: getTempColor(main.temp), 
+                fontSize: "0.9rem"
+              }}>
                 {Math.round(main.temp)}°C
               </div>
-              <div style={{ fontSize: "0.9rem", color: "#1976d2", textTransform: "capitalize", fontStyle: "normal" }}>
-                {weather[0].description}
-              </div>
             </div>
+            
             {/* Dự báo ngày mai */}
             {daily[0] && (
               <div
+                className="daily-item tomorrow"
                 style={{
-                  background: "rgba(255,255,255,0.7)",
-                  borderRadius: 10,
-                  padding: "0.7rem 1rem",
-                  minWidth: 90,
+                  background: "rgba(251, 140, 0, 0.12)",
+                  borderRadius: 8,
+                  padding: "0.6rem 0.5rem",
+                  minWidth: 75,
                   textAlign: "center",
-                  boxShadow: "0 2px 8px rgba(44,62,80,0.07)",
-                  border: "2px solid #fb8c00",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  border: "1px solid rgba(251, 140, 0, 0.2)",
                   scrollSnapAlign: "start",
-                  flex: "0 0 auto"
+                  flex: "0 0 auto",
+                  backdropFilter: "blur(10px)",
+                  transition: "all 0.3s ease",
+                  cursor: "pointer"
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.background = "rgba(251, 140, 0, 0.18)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.background = "rgba(251, 140, 0, 0.12)";
                 }}
               >
-                <div style={{ fontWeight: 600, color: "#fb8c00" }}>
+                <div style={{ 
+                  fontWeight: 600, 
+                  color: "#ffffff", 
+                  fontSize: "0.7rem",
+                  marginBottom: "0.3rem"
+                }}>
                   Ngày mai
                 </div>
-                <div style={{ fontSize: "1.5rem" }}>
+                <div style={{ 
+                  fontSize: "1.5rem", 
+                  margin: "0.2rem 0",
+                  filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))"
+                }}>
                   {getWeatherIcon(daily[0].weather[0].main)}
                 </div>
-                <div style={{ fontWeight: 700, color: getTempColor(daily[0].main.temp) }}>
+                <div style={{ 
+                  fontWeight: 700, 
+                  color: getTempColor(daily[0].main.temp), 
+                  fontSize: "0.9rem"
+                }}>
                   {Math.round(daily[0].main.temp)}°C
-                </div>
-                <div style={{ fontSize: "0.9rem", color: "#1976d2", textTransform: "capitalize", fontStyle: "normal" }}>
-                  {daily[0].weather[0].description}
                 </div>
               </div>
             )}
+            
             {/* Các ngày tiếp theo */}
-            {daily.slice(1).map((item) => {
+            {daily.slice(1, 6).map((item) => {
               const date = new Date(item.dt_txt);
-              const day = date.toLocaleDateString("vi-VN", { weekday: "short", day: "2-digit", month: "2-digit" });
+              const day = date.toLocaleDateString("vi-VN", { weekday: "short" });
               return (
                 <div
                   key={item.dt}
+                  className="daily-item"
                   style={{
-                    background: "rgba(255,255,255,0.7)",
-                    borderRadius: 10,
-                    padding: "0.7rem 1rem",
-                    minWidth: 90,
+                    background: "rgba(255,255,255,0.08)",
+                    borderRadius: 8,
+                    padding: "0.6rem 0.5rem",
+                    minWidth: 75,
                     textAlign: "center",
-                    boxShadow: "0 2px 8px rgba(44,62,80,0.07)",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                    border: "1px solid rgba(255,255,255,0.15)",
                     scrollSnapAlign: "start",
-                    flex: "0 0 auto"
+                    flex: "0 0 auto",
+                    backdropFilter: "blur(10px)",
+                    transition: "all 0.3s ease",
+                    cursor: "pointer"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = "translateY(-2px)";
+                    e.target.style.background = "rgba(255,255,255,0.12)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "translateY(0)";
+                    e.target.style.background = "rgba(255,255,255,0.08)";
                   }}
                 >
-                  <div style={{ fontWeight: 600, color: "#1976d2" }}>{day}</div>
-                  <div style={{ fontSize: "1.5rem" }}>
+                  <div style={{ 
+                    fontWeight: 600, 
+                    color: "#ffffff", 
+                    fontSize: "0.7rem",
+                    marginBottom: "0.3rem"
+                  }}>{day}</div>
+                  <div style={{ 
+                    fontSize: "1.5rem", 
+                    margin: "0.2rem 0",
+                    filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))"
+                  }}>
                     {getWeatherIcon(item.weather[0].main)}
                   </div>
-                  <div style={{ fontWeight: 700, color: getTempColor(item.main.temp) }}>
+                  <div style={{ 
+                    fontWeight: 700, 
+                    color: getTempColor(item.main.temp), 
+                    fontSize: "0.9rem"
+                  }}>
                     {Math.round(item.main.temp)}°C
-                  </div>
-                  <div style={{ fontSize: "0.9rem", color: "#1976d2", textTransform: "capitalize", fontStyle: "normal" }}>
-                    {item.weather[0].description}
                   </div>
                 </div>
               );
