@@ -46,29 +46,79 @@ const QuickStats = ({ data }) => {
             <div style={{ fontSize: '1.5rem', marginBottom: '0.3rem' }}>
               {stat.icon}
             </div>
-            <div className="stat-value">{stat.value}</div>
-            <div className="stat-label">{stat.label}</div>
+            <div className="stat-value" style={{
+              color: '#FFFFFF',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)',
+              WebkitTextFillColor: '#FFFFFF',
+              filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))'
+            }}>{stat.value}</div>
+            <div className="stat-label" style={{
+              color: 'rgba(255, 255, 255, 0.98)',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
+              WebkitTextFillColor: 'rgba(255, 255, 255, 0.98)'
+            }}>{stat.label}</div>
           </div>
         ))}
       </div>
       
       <div className="info-panel">
         <div style={{
-          color: 'rgba(255,255,255,0.9)',
+          color: '#FFFFFF',
           fontSize: '0.9rem',
           lineHeight: 1.4
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span>🌪️ Gió:</span>
-            <span>{data.wind?.speed || 0} m/s</span>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            marginBottom: '0.5rem',
+            alignItems: 'center'
+          }}>
+            <span style={{ 
+              color: 'rgba(255, 255, 255, 0.98)',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
+              fontWeight: '600'
+            }}>🌪️ Gió:</span>
+            <span style={{
+              color: '#FFFFFF',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)',
+              fontWeight: '700',
+              filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.3))'
+            }}>{data.wind?.speed || 0} m/s</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span>☁️ Mây:</span>
-            <span>{data.clouds?.all || 0}%</span>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            marginBottom: '0.5rem',
+            alignItems: 'center'
+          }}>
+            <span style={{ 
+              color: 'rgba(255, 255, 255, 0.98)',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
+              fontWeight: '600'
+            }}>☁️ Mây:</span>
+            <span style={{
+              color: '#FFFFFF',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)',
+              fontWeight: '700',
+              filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.3))'
+            }}>{data.clouds?.all || 0}%</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>👁️ Tầm nhìn:</span>
-            <span>{data.visibility ? (data.visibility / 1000).toFixed(1) + ' km' : '--'}</span>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span style={{ 
+              color: 'rgba(255, 255, 255, 0.98)',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
+              fontWeight: '600'
+            }}>👁️ Tầm nhìn:</span>
+            <span style={{
+              color: '#FFFFFF',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)',
+              fontWeight: '700',
+              filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.3))'
+            }}>{data.visibility ? (data.visibility / 1000).toFixed(1) + ' km' : '--'}</span>
           </div>
         </div>
       </div>

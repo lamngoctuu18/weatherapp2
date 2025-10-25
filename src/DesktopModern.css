@@ -254,6 +254,94 @@
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7) !important;
   }
 
+  /* Enhanced Info Boxes - Modern Glassmorphism Design */
+  .weather-card-info-box {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.12) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 20px !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.5),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .weather-card-info-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+    transition: left 0.5s ease;
+  }
+
+  .weather-card-info-box:hover::before {
+    left: 100%;
+  }
+
+  .weather-card-info-box:hover {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.18) 100%) !important;
+    border-color: rgba(100, 181, 246, 0.6) !important;
+    transform: translateY(-5px) scale(1.02) !important;
+    box-shadow: 
+      0 16px 48px rgba(0, 0, 0, 0.5),
+      0 0 40px rgba(100, 181, 246, 0.3),
+      inset 0 2px 2px rgba(255, 255, 255, 0.6),
+      inset 0 -2px 2px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .weather-card-info-box .info-label {
+    color: rgba(100, 181, 246, 1) !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    text-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(100, 181, 246, 0.4) !important;
+    margin-bottom: 6px !important;
+  }
+
+  .weather-card-info-box .info-value {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 
+      0 3px 15px rgba(0, 0, 0, 0.9),
+      0 1px 3px rgba(0, 0, 0, 0.8),
+      0 0 30px rgba(255, 255, 255, 0.3) !important;
+    font-size: 1.25rem !important;
+    letter-spacing: 0.5px !important;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)) !important;
+    line-height: 1.2 !important;
+  }
+
+  .weather-card-info-box .info-icon {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)) !important;
+    font-size: 1.6rem !important;
+    margin-bottom: 8px !important;
+    animation: iconFloat 3s ease-in-out infinite !important;
+  }
+
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+
   @keyframes rotateGlow {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }

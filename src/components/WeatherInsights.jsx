@@ -82,13 +82,21 @@ const WeatherInsights = ({ data, hourly }) => {
         }}>
           <span style={{ fontSize: '1.2rem', marginTop: '0.1rem' }}>💡</span>
           <div>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '0.95rem', marginBottom: '0.3rem' }}>
+            <div style={{ 
+              color: '#FFFFFF', 
+              fontWeight: '700', 
+              fontSize: '0.95rem', 
+              marginBottom: '0.3rem',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)'
+            }}>
               Lời khuyên
             </div>
             <div style={{ 
-              color: 'rgba(255,255,255,0.9)', 
+              color: '#FFFFFF', 
               fontSize: '0.85rem',
-              lineHeight: 1.4
+              lineHeight: 1.4,
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
+              filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.3))'
             }}>
               {advice}
             </div>
@@ -104,12 +112,19 @@ const WeatherInsights = ({ data, hourly }) => {
         }}>
           <span style={{ fontSize: '1.5rem' }}>📍</span>
           <div>
-            <div style={{ color: '#ffffff', fontWeight: '600', fontSize: '0.95rem' }}>
+            <div style={{ 
+              color: '#FFFFFF', 
+              fontWeight: '700', 
+              fontSize: '0.95rem',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)'
+            }}>
               Vị trí hiện tại
             </div>
             <div style={{ 
-              color: 'rgba(255,255,255,0.9)', 
-              fontSize: '0.85rem'
+              color: '#FFFFFF', 
+              fontSize: '0.85rem',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
+              filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.3))'
             }}>
               {data.name}, {data.sys?.country}
             </div>

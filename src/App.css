@@ -818,7 +818,9 @@ body.weather-snow {
 }
 
 .mobile-chip-city {
-  font-weight: 500;
+  font-weight: 600 !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9) !important;
 }
 
 .mobile-chip-temp {
@@ -827,18 +829,23 @@ body.weather-snow {
   padding: 1px 4px;
   border-radius: 6px;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 167, 38, 0.3)) !important;
 }
 
 /* Mobile Main Weather */
 .mobile-main-weather {
-  background: rgba(255,255,255,0.05);
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.4)) !important;
   margin: 1rem;
   border-radius: 20px;
   padding: 1.5rem;
-  backdrop-filter: blur(30px);
-  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(5px) !important;
+  border: 1.5px solid rgba(255,255,255,0.15);
   text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-weather-header h2 {
@@ -879,12 +886,16 @@ body.weather-snow {
   color: #FFA726;
   line-height: 1;
   margin-bottom: 0.5rem;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.9) !important;
+  filter: drop-shadow(0 0 12px rgba(255, 167, 38, 0.4)) !important;
 }
 
 .mobile-temp-feels {
   font-size: 0.9rem;
-  color: rgba(255,255,255,0.7);
-  font-weight: 400;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)) !important;
 }
 
 /* Mobile Quick Stats */
@@ -896,20 +907,26 @@ body.weather-snow {
 }
 
 .mobile-stat-item {
-  background: rgba(255,255,255,0.06);
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0.55)) !important;
   border-radius: 16px;
   padding: 1rem;
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(5px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   gap: 0.8rem;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-stat-item:hover {
-  background: rgba(255,255,255,0.1);
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.65)) !important;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 .mobile-stat-icon {
@@ -929,24 +946,32 @@ body.weather-snow {
 
 .mobile-stat-label {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.98) !important;
   margin-bottom: 0.2rem;
+  font-weight: 700 !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9) !important;
 }
 
 .mobile-stat-value {
   font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) !important;
+  -webkit-text-fill-color: #FFFFFF !important;
 }
 
 /* Mobile Analysis */
 .mobile-analysis {
   margin: 1rem;
-  background: rgba(255,255,255,0.05);
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.45)) !important;
   border-radius: 20px;
   padding: 1.5rem;
-  backdrop-filter: blur(30px);
-  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(5px) !important;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-analysis h3 {
@@ -990,15 +1015,18 @@ body.weather-snow {
 
 .mobile-analysis-title {
   font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
   margin-bottom: 0.3rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9) !important;
 }
 
 .mobile-analysis-desc {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.8);
+  color: #FFFFFF !important;
   line-height: 1.4;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)) !important;
 }
 
 /* Mobile Detailed Weather */
@@ -1711,28 +1739,28 @@ button:active {
 
 .info-panel {
   background: linear-gradient(135deg,
-    rgba(0, 0, 0, 0.35),
-    rgba(0, 0, 0, 0.25)) !important;
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0.55)) !important;
   border-radius: 16px;
   padding: 1.2rem;
-  backdrop-filter: blur(25px);
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 1rem;
   box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-panel:hover {
   background: linear-gradient(135deg,
-    rgba(0, 0, 0, 0.45),
-    rgba(0, 0, 0, 0.35)) !important;
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.65)) !important;
   border-color: rgba(100, 181, 246, 0.4);
   transform: translateY(-1px);
   box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 6px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Ensure info-panel text is visible */
@@ -1752,28 +1780,28 @@ button:active {
 
 .stat-item {
   background: linear-gradient(135deg,
-    rgba(0, 0, 0, 0.35),
-    rgba(0, 0, 0, 0.25)) !important;
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0.55)) !important;
   border-radius: 16px;
   padding: 1rem 0.8rem;
   text-align: center;
-  backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .stat-item:hover {
   background: linear-gradient(135deg,
-    rgba(0, 0, 0, 0.45),
-    rgba(0, 0, 0, 0.35)) !important;
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.65)) !important;
   transform: translateY(-2px);
   border-color: rgba(100, 181, 246, 0.4);
   box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 6px 20px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .stat-value {
@@ -2259,7 +2287,8 @@ button:active {
 .weather-card-info-box .info-value {
   font-weight: 700;
   font-size: 1.01rem;
-  color: #222;
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7) !important;
   margin-top: 1px;
 }
 

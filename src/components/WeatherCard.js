@@ -112,8 +112,8 @@ const WeatherCard = ({ data, hourly = [], daily = [], onRefresh, bgGradient }) =
   const main = data.main;
   const weather = data.weather;
   const name = data.name;
-  const infoRows = [info.slice(0, 4), info.slice(4, 8)];
-  const lastRow = info[8] ? [info[8]] : [];
+  // const infoRows = [info.slice(0, 4), info.slice(4, 8)];
+  // const lastRow = info[8] ? [info[8]] : [];
   const allHours = Array.isArray(hourly) ? hourly : [];
 
   // Hiệu ứng động Lottie bên trong card theo thời tiết
@@ -258,17 +258,20 @@ const WeatherCard = ({ data, hourly = [], daily = [], onRefresh, bgGradient }) =
             }}>{item.icon}</span>
             <div className="info-label" style={{
               fontSize: "0.75rem",
-              color: "rgba(255,255,255,0.9)",
-              fontWeight: 600,
+              color: "rgba(255,255,255,0.98)",
+              fontWeight: 700,
               marginBottom: "0.3rem",
               textTransform: "uppercase",
-              letterSpacing: "0.5px"
+              letterSpacing: "0.5px",
+              textShadow: "0 2px 6px rgba(0,0,0,0.9)"
             }}>{item.label}</div>
             <div className="info-value" style={{
               fontWeight: 700,
               fontSize: "1rem",
-              color: "#ffffff",
-              textShadow: "0 1px 3px rgba(0,0,0,0.3)"
+              color: "#FFFFFF",
+              textShadow: "0 2px 10px rgba(0,0,0,0.9)",
+              filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))",
+              WebkitTextFillColor: "#FFFFFF"
             }}>{item.value}</div>
           </div>
         ))}
@@ -317,16 +320,20 @@ const WeatherCard = ({ data, hourly = [], daily = [], onRefresh, bgGradient }) =
               }}>{item.icon}</span>
               <div className="info-label" style={{
                 fontSize: "0.7rem",
-                color: "rgba(255,255,255,0.8)",
-                fontWeight: 500,
+                color: "rgba(255,255,255,0.98)",
+                fontWeight: 700,
                 marginBottom: "0.2rem",
                 textTransform: "uppercase",
-                letterSpacing: "0.3px"
+                letterSpacing: "0.3px",
+                textShadow: "0 2px 6px rgba(0,0,0,0.9)"
               }}>{item.label}</div>
               <div className="info-value" style={{
                 fontWeight: 700,
                 fontSize: "0.9rem",
-                color: "#ffffff"
+                color: "#FFFFFF",
+                textShadow: "0 2px 10px rgba(0,0,0,0.9)",
+                filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))",
+                WebkitTextFillColor: "#FFFFFF"
               }}>{item.value}</div>
             </div>
           ))}
