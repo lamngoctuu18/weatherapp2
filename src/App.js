@@ -3,6 +3,7 @@ import axios from "axios";
 import { WeatherCard, WeatherBackground, QuickStats, WeatherInsights, HistoryCard } from "./components";
 import "./App.css";
 import "./MobileModern.css";
+import "./DesktopModern.css";
 
 const API_KEY = "90ed417a48c3627d0549d3da4910bf2d";
 
@@ -19,11 +20,21 @@ function App() {
   const [isDark, setIsDark] = useState(false);
   const weatherBgRef = useRef(null);
   const [cardKey, setCardKey] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   // Auto theme theo giờ
   useEffect(() => {
     const hour = new Date().getHours();
     setIsDark(hour >= 18 || hour < 6);
+  }, []);
+
+  // Detect mobile responsive
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const fetchWeather = useCallback(async (cityName) => {
@@ -164,10 +175,24 @@ function App() {
     if (code === 800) return "clear";
     if (code >= 200 && code < 300) return "storm";
     if (code >= 500 && code < 600) return "rain";
+    if (code >= 600 && code < 700) return "snow";
     if (code >= 801 && code <= 803) return "cloud";
     if (code === 804) return "cloudy";
     return "clear";
   };
+
+  // Thay đổi background body theo thời tiết
+  useEffect(() => {
+    if (weather) {
+      const effect = getWeatherEffect(weather);
+      document.body.className = `weather-${effect}`;
+    } else {
+      document.body.className = '';
+    }
+    return () => {
+      document.body.className = '';
+    };
+  }, [weather]);
 
   // Hiệu ứng nền động theo thời tiết
   useEffect(() => {
@@ -228,6 +253,190 @@ function App() {
       };
     }
   }, [weather]);
+
+  // Helper functions
+  const getWeatherEmoji = (weather) => {
+    if (!weather || !weather.weather || !weather.weather[0]) return "🌤️";
+    const code = weather.weather[0].id;
+    if (code === 800) return "☀️";
+    if (code >= 200 && code < 300) return "⛈️";
+    if (code >= 500 && code < 600) return "🌧️";
+    if (code >= 600 && code < 700) return "❄️";
+    if (code >= 801 && code <= 804) return "☁️";
+    return "🌤️";
+  };
+
+  const getWeatherAdvice = (weather) => {
+    if (!weather) return [];
+    const temp = weather.main.temp;
+    const condition = weather.weather[0].main.toLowerCase();
+    const advice = [];
+
+    if (temp > 35) advice.push({ icon: "🔥", title: "Nhiệt độ rất cao", desc: "Hạn chế ra ngoài, uống nhiều nước" });
+    else if (temp > 30) advice.push({ icon: "☀️", title: "Trời nóng", desc: "Mang theo nước và kem chống nắng" });
+    else if (temp < 10) advice.push({ icon: "🧥", title: "Trời lạnh", desc: "Mặc ấm khi ra ngoài" });
+    
+    if (condition.includes("rain")) advice.push({ icon: "☔", title: "Có mưa", desc: "Nhớ mang theo ô" });
+    if (condition.includes("storm")) advice.push({ icon: "⚠️", title: "Có bão", desc: "Hạn chế di chuyển" });
+    if (weather.wind.speed > 10) advice.push({ icon: "💨", title: "Gió mạnh", desc: "Cẩn thận khi đi xe" });
+
+    return advice;
+  };
+
+  // Mobile Layout Component
+  const MobileLayout = () => (
+    <div className="mobile-container">
+      {/* Mobile Header */}
+      <div className="mobile-header">
+        <div className="mobile-brand">
+          <h1>🌤️ Weather App</h1>
+        </div>
+        <form onSubmit={handleSubmit} className="mobile-search-form">
+          <div className="mobile-search-input-group">
+            <input
+              type="text"
+              placeholder="Nhập tên thành phố..."
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="mobile-search-input"
+            />
+            <div className="mobile-search-buttons">
+              <button
+                type="button"
+                className="mobile-btn-icon"
+                onClick={handleGeo}
+                title="GPS"
+              >
+                📍
+              </button>
+              <button
+                type="button"
+                className="mobile-btn-icon"
+                onClick={handleVoice}
+                title="Giọng nói"
+              >
+                🎤
+              </button>
+              <button type="submit" className="mobile-btn-primary" title="Tìm kiếm">
+                🔍
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      {/* Mobile History */}
+      {history.length > 0 && (
+        <div className="mobile-history">
+          <div className="mobile-history-chips">
+            {history.slice(0, 5).map((item) => (
+              <div
+                key={item.name}
+                className="mobile-history-chip"
+                onClick={() => fetchWeather(item.name)}
+              >
+                <span className="mobile-chip-city">{item.name}</span>
+                <span className="mobile-chip-temp">{item.temp}°</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {weather ? (
+        <>
+          {/* Mobile Main Weather */}
+          <div className="mobile-main-weather">
+            <div className="mobile-weather-header">
+              <h2>{weather.name}</h2>
+              <p>{weather.weather[0].description}</p>
+            </div>
+            <div className="mobile-weather-display">
+              <div className="mobile-weather-icon">
+                <span>{getWeatherEmoji(weather)}</span>
+              </div>
+              <div className="mobile-temperature">
+                <div className="mobile-temp-main">{Math.round(weather.main.temp)}°</div>
+                <div className="mobile-temp-feels">Cảm giác {Math.round(weather.main.feels_like)}°</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Quick Stats */}
+          <div className="mobile-quick-stats">
+            <div className="mobile-stat-item">
+              <div className="mobile-stat-icon">💧</div>
+              <div className="mobile-stat-info">
+                <div className="mobile-stat-label">Độ ẩm</div>
+                <div className="mobile-stat-value">{weather.main.humidity}%</div>
+              </div>
+            </div>
+            <div className="mobile-stat-item">
+              <div className="mobile-stat-icon">💨</div>
+              <div className="mobile-stat-info">
+                <div className="mobile-stat-label">Gió</div>
+                <div className="mobile-stat-value">{weather.wind.speed}m/s</div>
+              </div>
+            </div>
+            <div className="mobile-stat-item">
+              <div className="mobile-stat-icon">🌡️</div>
+              <div className="mobile-stat-info">
+                <div className="mobile-stat-label">Áp suất</div>
+                <div className="mobile-stat-value">{weather.main.pressure}hPa</div>
+              </div>
+            </div>
+            <div className="mobile-stat-item">
+              <div className="mobile-stat-icon">👁️</div>
+              <div className="mobile-stat-info">
+                <div className="mobile-stat-label">Tầm nhìn</div>
+                <div className="mobile-stat-value">{(weather.visibility / 1000).toFixed(1)}km</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Analysis */}
+          {getWeatherAdvice(weather).length > 0 && (
+            <div className="mobile-analysis">
+              <h3>💡 Lời khuyên</h3>
+              <div className="mobile-analysis-items">
+                {getWeatherAdvice(weather).map((item, idx) => (
+                  <div key={idx} className="mobile-analysis-item">
+                    <div className="mobile-analysis-icon">{item.icon}</div>
+                    <div className="mobile-analysis-content">
+                      <div className="mobile-analysis-title">{item.title}</div>
+                      <div className="mobile-analysis-desc">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Detailed Weather */}
+          <div className="mobile-detailed-weather">
+            <WeatherCard key={cardKey} data={weather} hourly={hourlyWeather} daily={dailyWeather} />
+          </div>
+        </>
+      ) : (
+        <div className="mobile-main-weather" style={{ marginTop: '2rem' }}>
+          <div className="mobile-weather-header">
+            <h2>Chào mừng! 👋</h2>
+            <p>Nhập tên thành phố để xem thông tin thời tiết</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // Desktop/Mobile conditional rendering
+  if (isMobile) {
+    return (
+      <React.Fragment>
+        <WeatherBackground ref={weatherBgRef} />
+        <MobileLayout />
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
