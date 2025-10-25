@@ -1,23 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { WeatherCard, WeatherBackground, QuickStats, WeatherInsights, HistoryCard } from "./components";
 import "./App.css";
+import "./MobileModern.css";
 
 const API_KEY = "90ed417a48c3627d0549d3da4910bf2d";
-
-// Hàm map weather icon code sang lottie type
-function mapWeatherIconToType(iconCode) {
-  if (!iconCode) return 'cloudy';
-  if (iconCode.includes('01')) return 'sunny';
-  if (iconCode.includes('02') || iconCode.includes('03') || iconCode.includes('04')) return 'cloudy';
-  if (iconCode.includes('09')) return 'rainy';
-  if (iconCode.includes('10')) return 'rain';
-  if (iconCode.includes('11')) return 'storm';
-  if (iconCode.includes('13')) return 'snow';
-  if (iconCode.includes('50')) return 'fog';
-  if (iconCode.includes('n')) return 'night';
-  return 'cloudy';
-}
 
 function App() {
   const [city, setCity] = useState("");
@@ -33,18 +20,13 @@ function App() {
   const weatherBgRef = useRef(null);
   const [cardKey, setCardKey] = useState(0);
 
-  useEffect(() => {
-    const lastCity = localStorage.getItem("lastCity");
-    if (lastCity) fetchWeather(lastCity);
-  }, []);
-
   // Auto theme theo giờ
   useEffect(() => {
     const hour = new Date().getHours();
     setIsDark(hour >= 18 || hour < 6);
   }, []);
 
-  const fetchWeather = async (cityName) => {
+  const fetchWeather = useCallback(async (cityName) => {
     try {
       const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric&lang=vi`
@@ -55,12 +37,14 @@ function App() {
       localStorage.setItem("lastCity", cityName);
       
       // Thêm vào lịch sử
-      const newHistory = [
-        { name: res.data.name, temp: Math.round(res.data.main.temp), time: Date.now() },
-        ...history.filter((item) => item.name !== res.data.name),
-      ].slice(0, 10);
-      setHistory(newHistory);
-      localStorage.setItem("weatherHistory", JSON.stringify(newHistory));
+      setHistory(prevHistory => {
+        const newHistory = [
+          { name: res.data.name, temp: Math.round(res.data.main.temp), time: Date.now() },
+          ...prevHistory.filter((item) => item.name !== res.data.name),
+        ].slice(0, 10);
+        localStorage.setItem("weatherHistory", JSON.stringify(newHistory));
+        return newHistory;
+      });
 
       // Fetch hourly forecast
       try {
@@ -87,7 +71,12 @@ function App() {
       setHourlyWeather([]);
       setDailyWeather([]);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const lastCity = localStorage.getItem("lastCity");
+    if (lastCity) fetchWeather(lastCity);
+  }, [fetchWeather]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -239,10 +228,6 @@ function App() {
       };
     }
   }, [weather]);
-
-  const weatherType = weather && weather.weather && weather.weather[0]
-    ? mapWeatherIconToType(weather.weather[0].icon)
-    : 'cloudy';
 
   return (
     <React.Fragment>
