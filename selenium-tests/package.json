@@ -1,0 +1,23 @@
+{
+  "name": "selenium-tests",
+  "version": "1.0.0",
+  "main": "test.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "selenium",
+    "testing",
+    "weather-app"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Automated tests for Weather App using Selenium WebDriver",
+  "dependencies": {
+    "selenium-webdriver": "^4.38.0"
+  },
+  "devDependencies": {
+    "@wdio/selenium-standalone-service": "^8.14.0",
+    "docx": "^9.5.1"
+  }
+}

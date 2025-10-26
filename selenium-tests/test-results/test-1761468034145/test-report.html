@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App Test Report - test-1761468034145</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px 40px;
+      background: #f8f9fa;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .summary-card .value {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .summary-card .label {
+      color: #666;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary-card.total .value { color: #667eea; }
+    .summary-card.passed .value { color: #10b981; }
+    .summary-card.failed .value { color: #ef4444; }
+    .summary-card.warning .value { color: #f59e0b; }
+    .summary-card.duration .value { color: #8b5cf6; font-size: 2rem; }
+
+    .test-steps {
+      padding: 40px;
+    }
+
+    .test-steps h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .step {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid #ddd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transform: translateX(5px);
+    }
+
+    .step.passed { border-left-color: #10b981; }
+    .step.failed { border-left-color: #ef4444; }
+    .step.warning { border-left-color: #f59e0b; }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .step-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .step-status {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .step-status.passed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .step-status.failed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .step-status.warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .step-details {
+      color: #666;
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .step-time {
+      color: #999;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .step-screenshot {
+      margin-top: 15px;
+    }
+
+    .step-screenshot img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .step-screenshot img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .screenshots-gallery {
+      padding: 40px;
+      background: #f8f9fa;
+    }
+
+    .screenshots-gallery h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .gallery-item-info {
+      padding: 15px;
+    }
+
+    .gallery-item-name {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .gallery-item-time {
+      color: #999;
+      font-size: 0.85rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      color: #666;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    /* Modal for fullscreen images */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      cursor: zoom-out;
+    }
+
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media print {
+      .modal { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌤️ Weather App Test Report</h1>
+      <p>Test ID: test-1761468034145</p>
+      <p>15:40:34 26/10/2025 - 15:40:50 26/10/2025</p>
+    </div>
+
+    <div class="summary">
+      <div class="summary-card total">
+        <div class="label">Tổng số test</div>
+        <div class="value">5</div>
+      </div>
+      <div class="summary-card passed">
+        <div class="label">Thành công</div>
+        <div class="value">5</div>
+      </div>
+      <div class="summary-card failed">
+        <div class="label">Thất bại</div>
+        <div class="value">0</div>
+      </div>
+      <div class="summary-card warning">
+        <div class="label">Cảnh báo</div>
+        <div class="value">0</div>
+      </div>
+      <div class="summary-card duration">
+        <div class="label">Thời gian</div>
+        <div class="value">15.94s</div>
+      </div>
+    </div>
+
+    <div class="test-steps">
+      <h2>📋 Chi tiết các bước test</h2>
+      
+        <div class="step passed">
+          <div class="step-header">
+            <div class="step-name">Bước 1: Khởi động Chrome Browser</div>
+            <div class="step-status passed">
+              ✓ Passed
+            </div>
+          </div>
+          <div class="step-details">Chrome đã khởi động thành công</div>
+          <div class="step-time">⏱️ 15:40:34 26/10/2025</div>
+          
+            <div class="step-screenshot">
+              <img src="screenshots/1761468035339-chrome-started.png" 
+                   alt="Khởi động Chrome Browser" 
+                   onclick="openModal(this.src)">
+            </div>
+          
+        </div>
+      
+        <div class="step passed">
+          <div class="step-header">
+            <div class="step-name">Bước 2: Truy cập localhost:3000</div>
+            <div class="step-status passed">
+              ✓ Passed
+            </div>
+          </div>
+          <div class="step-details">Trang đã load thành công</div>
+          <div class="step-time">⏱️ 15:40:35 26/10/2025</div>
+          
+            <div class="step-screenshot">
+              <img src="screenshots/1761468039481-page-loaded.png" 
+                   alt="Truy cập localhost:3000" 
+                   onclick="openModal(this.src)">
+            </div>
+          
+        </div>
+      
+        <div class="step passed">
+          <div class="step-header">
+            <div class="step-name">Bước 3: Tìm ô input</div>
+            <div class="step-status passed">
+              ✓ Passed
+            </div>
+          </div>
+          <div class="step-details">Tìm thấy ô tìm kiếm</div>
+          <div class="step-time">⏱️ 15:40:39 26/10/2025</div>
+          
+            <div class="step-screenshot">
+              <img src="screenshots/1761468039836-input-found.png" 
+                   alt="Tìm ô input" 
+                   onclick="openModal(this.src)">
+            </div>
+          
+        </div>
+      
+        <div class="step passed">
+          <div class="step-header">
+            <div class="step-name">Bước 4: Nhập Hanoi</div>
+            <div class="step-status passed">
+              ✓ Passed
+            </div>
+          </div>
+          <div class="step-details">Đã nhập Hanoi</div>
+          <div class="step-time">⏱️ 15:40:40 26/10/2025</div>
+          
+            <div class="step-screenshot">
+              <img src="screenshots/1761468041285-hanoi-typed.png" 
+                   alt="Nhập Hanoi" 
+                   onclick="openModal(this.src)">
+            </div>
+          
+        </div>
+      
+        <div class="step passed">
+          <div class="step-header">
+            <div class="step-name">Bước 5: Tìm kiếm</div>
+            <div class="step-status passed">
+              ✓ Passed
+            </div>
+          </div>
+          <div class="step-details">Đã tìm kiếm thành công</div>
+          <div class="step-time">⏱️ 15:40:41 26/10/2025</div>
+          
+            <div class="step-screenshot">
+              <img src="screenshots/1761468047037-hanoi-result.png" 
+                   alt="Tìm kiếm" 
+                   onclick="openModal(this.src)">
+            </div>
+          
+        </div>
+      
+    </div>
+
+    <div class="screenshots-gallery">
+      <h2>📸 Tất cả Screenshots</h2>
+      <div class="gallery-grid">
+        
+          <div class="gallery-item">
+            <img src="screenshots/1761468035339-chrome-started.png" 
+                 alt="chrome-started"
+                 onclick="openModal(this.src)">
+            <div class="gallery-item-info">
+              <div class="gallery-item-name">chrome-started</div>
+              <div class="gallery-item-time">📅 15:40:35 26/10/2025</div>
+              
+            </div>
+          </div>
+        
+          <div class="gallery-item">
+            <img src="screenshots/1761468039481-page-loaded.png" 
+                 alt="page-loaded"
+                 onclick="openModal(this.src)">
+            <div class="gallery-item-info">
+              <div class="gallery-item-name">page-loaded</div>
+              <div class="gallery-item-time">📅 15:40:39 26/10/2025</div>
+              
+            </div>
+          </div>
+        
+          <div class="gallery-item">
+            <img src="screenshots/1761468039836-input-found.png" 
+                 alt="input-found"
+                 onclick="openModal(this.src)">
+            <div class="gallery-item-info">
+              <div class="gallery-item-name">input-found</div>
+              <div class="gallery-item-time">📅 15:40:40 26/10/2025</div>
+              
+            </div>
+          </div>
+        
+          <div class="gallery-item">
+            <img src="screenshots/1761468041285-hanoi-typed.png" 
+                 alt="hanoi-typed"
+                 onclick="openModal(this.src)">
+            <div class="gallery-item-info">
+              <div class="gallery-item-name">hanoi-typed</div>
+              <div class="gallery-item-time">📅 15:40:41 26/10/2025</div>
+              
+            </div>
+          </div>
+        
+          <div class="gallery-item">
+            <img src="screenshots/1761468047037-hanoi-result.png" 
+                 alt="hanoi-result"
+                 onclick="openModal(this.src)">
+            <div class="gallery-item-info">
+              <div class="gallery-item-name">hanoi-result</div>
+              <div class="gallery-item-time">📅 15:40:47 26/10/2025</div>
+              
+            </div>
+          </div>
+        
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Generated by Weather App Selenium Test Suite</p>
+      <p>© 2025 - Automated Testing Report</p>
+    </div>
+  </div>
+
+  <!-- Modal for fullscreen images -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <script>
+    function openModal(src) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = 'block';
+      modalImg.src = src;
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
+    
